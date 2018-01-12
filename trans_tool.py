@@ -14,14 +14,13 @@ class pic_base():
         self.stats = dict()
 
     def _filter(self, x):
-        _return = False
-        for i in self.search_keys:
-            try:
-                if x.index(i) == 0:
-                    _return = True
-            except:
-                pass
-        return _return
+        _x = str(x).upper()
+        for key in self.search_keys:
+            if key.upper() in x:
+                return True
+        if self.search_keys == '':
+            return True
+        return False
 
     def readIndex(self, filename, lst):
         try:
@@ -40,9 +39,8 @@ class pic_base():
                         if _split[3][0] == 'J':
                             _kind = _split[3][:4]
 
-                        if _kind == '' or self._filter(_kind) is False:
-                            continue
-                        _return.append((_split[0], _kind))
+                        if self._filter(_kind) is True and _kind != '':
+                            _return.append((_split[0], _kind))
         except:
             pass
         return _return
